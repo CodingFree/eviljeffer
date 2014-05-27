@@ -3,12 +3,13 @@
 import sys, getopt, os
 import zipfile
 
-def printhelp():
+def printhelp(argv):
   print 'eviljeffer.py -i <inputfile> -o <outputpath>'
 
-def main(argv):
+def getpaths(argv):
   inputfile = ''
   outpath = ''
+
   try:
     opts, args = getopt.getopt(argv, "i:o:")
   except getopt.GetoptError:
@@ -23,6 +24,9 @@ def main(argv):
         inputfile = arg
       if opt in ("-o", "--path"):
         outpath = arg
+  return inputfile, outpath
+
+def unzip(inputfile, outpath):
   try:
     fh = open(inputfile, 'rb')
   except IOError as e:
@@ -36,6 +40,16 @@ def main(argv):
     fh.close()
   except OSError as e:
     print e.strerror
-    sys.exit(2)
+    sys.exit(2) 
+
+def main(argv):
+  inputfile = ''
+  outpath = ''
+
+  inputfile, outpath = getpaths(argv)
+
+  unzip(inputfile, outpath)
+
+
 if __name__ == "__main__":
   main(sys.argv[1:])
