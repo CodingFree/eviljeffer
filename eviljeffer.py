@@ -8,7 +8,7 @@ def printhelp():
 
 def main(argv):
    inputfile = ''
-   outputpath = ''
+   outpath = ''
    try:
      opts, args = getopt.getopt(argv, "i:o:")
    except getopt.GetoptError:
@@ -18,14 +18,26 @@ def main(argv):
      if opt == '-h':
         printhelp()
         sys.exit()
-     elif opt in ("-i", "--ifile"):
-        inputfile = arg
-	if not os.path.isfile(inputfile):
-	  print "Input file does not exist"
-	  sys.exit(2)
      else:
-       printhelp()
+       if opt in ("-i", "--file"):
+         inputfile = arg
+   if not os.path.isfile(inputfile):
+     print 'Input file does not exist'
+     sys.exit(2)
+   else:
+     print 'Input file: ', inputfile
+   
+   if opt in ("-o", "--output"):
+     outpath = arg
+     if os.path.exists(outpath):
+       print 'Output path: ', outpath
+     else:
+       print 'Not a valid ouput path'
        sys.exit(2)
+   else:
+     print 'Current path as output by default'
+     outpath = "."
+  
    if not inputfile.endswith("zip"):
      print 'It is not a zip!'
    else:
